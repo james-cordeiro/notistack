@@ -7,8 +7,19 @@ const DIRECTION = {
     top: 'down',
 };
 
-export const muiClasses = {
-    root: {},
+const defaultAnchorOrigin = {
+    vertical: 'bottom',
+    horizontal: 'left',
+};
+
+const muiClasses = {
+    root: {
+        position: 'relative',
+    },
+    variantSuccess: {},
+    variantError: {},
+    variantInfo: {},
+    variantWarning: {},
     anchorOriginTopCenter: {},
     anchorOriginBottomCenter: {},
     anchorOriginTopRight: {},
@@ -29,12 +40,6 @@ export const getTransitionDirection = (anchorOrigin = defaultAnchorOrigin) => {
 };
 
 /**
- * Capitalises a piece of string
- * @param {string} text
- */
-export const capitalise = text => text.charAt(0).toUpperCase() + text.slice(1);
-
-/**
  * Filteres classes object and returns the keys that are allowed
  * in material-ui snackbar classes prop
  * @param {object} classes
@@ -47,3 +52,12 @@ export const getMuiClasses = classes => (
             [key]: classes[key],
         }), {})
 );
+
+export {
+    defaultAnchorOrigin,
+    getTransitionDirection,
+    getMuiClasses,
+    muiClasses,
+    TransitionComponent,
+    variantIcon,
+};

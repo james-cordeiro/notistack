@@ -1,11 +1,18 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import Slide from '@material-ui/core/Slide';
-import SnackbarContext from './SnackbarContext';
-import { TRANSITION_DELAY, TRANSITION_DOWN_DURATION, MESSAGES, iconVariant } from './utils/constants';
+import classNames from 'classnames';
+import { withStyles } from '@material-ui/core/styles';
+import { SnackbarContext, SnackbarContextNext } from './SnackbarContext';
+import { TRANSITION_DELAY, TRANSITION_DOWN_DURATION, MESSAGES } from './utils/constants';
+import capitalise from './utils/capitalise';
 import SnackbarItem from './SnackbarItem';
 import warning from './utils/warning';
 
+import {
+    getMuiClasses,
+} from './SnackbarItem/SnackbarItem.util';
+
+import { styles } from './SnackbarProvider.styles';
 
 class SnackbarProvider extends Component {
     constructor(props) {
@@ -24,17 +31,7 @@ class SnackbarProvider extends Component {
     get offsets() {
         const { snacks } = this.state;
         return snacks.map((item, i) => {
-            let index = i;
-            const { view: viewOffset, snackbar: snackbarOffset } = this.props.dense
-                ? { view: 0, snackbar: 4 }
-                : { view: 20, snackbar: 12 };
-            let offset = viewOffset;
-            while (snacks[index - 1]) {
-                const snackHeight = snacks[index - 1].height || 48;
-                offset += snackHeight + snackbarOffset;
-                index -= 1;
-            }
-            return offset;
+            return 20;
         });
     }
 
@@ -199,23 +196,39 @@ class SnackbarProvider extends Component {
     };
 
     render() {
-        const { children, maxSnack, dense, ...props } = this.props;
-        const { contextValue, snacks } = this.state;
+        const { children, maxSnack, classes, anchorOrigin = {}, className, ...props } = this.props,
+        itemClasses = getMuiClasses(classes);
+        const { snacks } = this.state;
 
         return (
-            <SnackbarContext.Provider value={contextValue}>
-                {children}
-                {snacks.map((snack, index) => (
-                    <SnackbarItem
-                        {...props}
-                        key={snack.key}
-                        snack={snack}
-                        offset={this.offsets[index]}
-                        onClose={this.handleCloseSnack}
-                        onExited={this.handleExitedSnack}
-                        onSetHeight={this.handleSetHeight}
-                    />
-                ))}
+            <SnackbarContext.Provider value={this.handlePresentSnackbar}>
+                <SnackbarContextNext.Provider value={{
+                    handleEnqueueSnackbar: this.handleEnqueueSnackbar,
+                    handleCloseSnackbar: this.handleDismissSnack,
+                }}>
+                    <Fragment>
+                        {children}
+                        <div className={classNames(
+                            classes.root,
+                            classes[`anchorOrigin${capitalise(anchorOrigin.vertical)}${capitalise(anchorOrigin.horizontal)}`],
+                            className,
+                        )}>
+                            {snacks.map((snack, index) => (
+                                <SnackbarItem
+                                    {...props}
+                                    classOverrides={itemClasses}
+                                    key={snack.key}
+                                    anchorOrigin={anchorOrigin}
+                                    snack={snack}
+                                    offset={this.offsets[index]}
+                                    onClose={this.handleCloseSnack}
+                                    onExited={this.handleExitedSnack}
+                                    onSetHeight={this.handleSetHeight}
+                                />
+                            ))}
+                        </div>
+                    </Fragment>
+                </SnackbarContextNext.Provider>
             </SnackbarContext.Provider>
         );
     }
@@ -361,4 +374,4 @@ SnackbarProvider.defaultProps = {
     TransitionComponent: Slide,
 };
 
-export default SnackbarProvider;
+export default withStyles(styles)(SnackbarProvider);
