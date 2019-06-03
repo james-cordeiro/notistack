@@ -1,6 +1,6 @@
 /* Taken from @material-ui/core/Snackbar.js styles */
 
-export const styles = theme => {
+export const styles = (theme) => {
     const gutter = 24;
     const top = { top: 0 };
     const bottom = { bottom: 0 };
@@ -31,14 +31,14 @@ export const styles = theme => {
         anchorOriginTopCenter: {
             ...top,
             [theme.breakpoints.up('md')]: {
-            ...center,
+                ...center,
             },
         },
         /* Styles applied to the root element if `anchorOrigin={{ 'bottom', 'center' }}`. */
         anchorOriginBottomCenter: {
             ...bottom,
             [theme.breakpoints.up('md')]: {
-            ...center,
+                ...center,
             },
         },
         /* Styles applied to the root element if `anchorOrigin={{ 'top', 'right' }}`. */
@@ -46,9 +46,9 @@ export const styles = theme => {
             ...top,
             ...right,
             [theme.breakpoints.up('md')]: {
-            left: 'auto',
-            ...topSpace,
-            ...rightSpace,
+                left: 'auto',
+                ...topSpace,
+                ...rightSpace,
             },
         },
         /* Styles applied to the root element if `anchorOrigin={{ 'bottom', 'right' }}`. */
@@ -56,9 +56,9 @@ export const styles = theme => {
             ...bottom,
             ...right,
             [theme.breakpoints.up('md')]: {
-            left: 'auto',
-            ...bottomSpace,
-            ...rightSpace,
+                left: 'auto',
+                ...bottomSpace,
+                ...rightSpace,
             },
         },
         /* Styles applied to the root element if `anchorOrigin={{ 'top', 'left' }}`. */
@@ -66,9 +66,9 @@ export const styles = theme => {
             ...top,
             ...left,
             [theme.breakpoints.up('md')]: {
-            right: 'auto',
-            ...topSpace,
-            ...leftSpace,
+                right: 'auto',
+                ...topSpace,
+                ...leftSpace,
             },
         },
         /* Styles applied to the root element if `anchorOrigin={{ 'bottom', 'left' }}`. */
@@ -76,9 +76,9 @@ export const styles = theme => {
             ...bottom,
             ...left,
             [theme.breakpoints.up('md')]: {
-            right: 'auto',
-            ...bottomSpace,
-            ...leftSpace,
+                right: 'auto',
+                ...bottomSpace,
+                ...leftSpace,
             },
         },
     };

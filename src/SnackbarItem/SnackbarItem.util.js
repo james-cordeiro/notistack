@@ -7,19 +7,10 @@ const DIRECTION = {
     top: 'down',
 };
 
-const defaultAnchorOrigin = {
-    vertical: 'bottom',
-    horizontal: 'left',
-};
-
 const muiClasses = {
     root: {
         position: 'relative',
     },
-    variantSuccess: {},
-    variantError: {},
-    variantInfo: {},
-    variantWarning: {},
     anchorOriginTopCenter: {},
     anchorOriginBottomCenter: {},
     anchorOriginTopRight: {},
@@ -55,9 +46,5 @@ export const getMuiClasses = classes => (
 
 export {
     defaultAnchorOrigin,
-    getTransitionDirection,
-    getMuiClasses,
     muiClasses,
-    TransitionComponent,
-    variantIcon,
 };

@@ -1,18 +1,26 @@
-import React, { Component } from 'react';
+import React, { Fragment, Component } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { withStyles } from '@material-ui/core/styles';
-import { SnackbarContext, SnackbarContextNext } from './SnackbarContext';
-import { TRANSITION_DELAY, TRANSITION_DOWN_DURATION, MESSAGES } from './utils/constants';
+
+import Slide from '@material-ui/core/Slide';
+
+import SnackbarContext from './SnackbarContext';
+import {
+    TRANSITION_DELAY,
+    TRANSITION_DOWN_DURATION,
+    MESSAGES,
+    iconVariant,
+} from './utils/constants';
 import capitalise from './utils/capitalise';
 import SnackbarItem from './SnackbarItem';
 import warning from './utils/warning';
 
+import { styles } from './SnackbarProvider.styles';
+
 import {
     getMuiClasses,
 } from './SnackbarItem/SnackbarItem.util';
-
-import { styles } from './SnackbarProvider.styles';
 
 class SnackbarProvider extends Component {
     constructor(props) {
@@ -30,9 +38,7 @@ class SnackbarProvider extends Component {
 
     get offsets() {
         const { snacks } = this.state;
-        return snacks.map((item, i) => {
-            return 20;
-        });
+        return snacks.map(() => 20);
     }
 
     /**
@@ -107,9 +113,10 @@ class SnackbarProvider extends Component {
         let popped = false;
         let ignore = false;
 
-        const persistentCount = this.state.snacks.reduce((acc, current) => (
-            acc + (current.open && current.persist ? 1 : 0)
-        ), 0);
+        const persistentCount = this.state.snacks.reduce(
+            (acc, current) => acc + (current.open && current.persist ? 1 : 0),
+            0,
+        );
 
         if (persistentCount === this.props.maxSnack) {
             warning(MESSAGES.NO_PERSIST_ALL);
@@ -146,9 +153,7 @@ class SnackbarProvider extends Component {
      */
     handleCloseSnack = (event, reason, key) => {
         this.setState(({ snacks }) => ({
-            snacks: snacks.map(item => (
-                (!key || item.key === key) ? { ...item, open: false } : { ...item }
-            )),
+            snacks: snacks.map(item => (!key || item.key === key ? { ...item, open: false } : { ...item })),
         }));
 
         if (this.props.onClose) this.props.onClose(event, reason, key);
@@ -160,7 +165,7 @@ class SnackbarProvider extends Component {
      */
     handleDismissSnack = (key) => {
         this.handleCloseSnack(null, null, key);
-    }
+    };
 
     /**
      * When we set open attribute of a snackbar to false (i.e. after we hide a snackbar),
@@ -189,52 +194,53 @@ class SnackbarProvider extends Component {
      */
     handleSetHeight = (key, height) => {
         this.setState(({ snacks }) => ({
-            snacks: snacks.map(item => (
-                item.key === key ? { ...item, height } : { ...item }
-            )),
+            snacks: snacks.map(item => (item.key === key ? { ...item, height } : { ...item })),
         }));
     };
 
     render() {
-        const { children, maxSnack, classes, anchorOrigin = {}, className, ...props } = this.props,
-        itemClasses = getMuiClasses(classes);
-        const { snacks } = this.state;
+        const { classes, children, maxSnack, dense, anchorOrigin = {}, className, ...props } = this.props;
+        const itemClasses = getMuiClasses(classes);
+        const { contextValue, snacks } = this.state;
 
         return (
-            <SnackbarContext.Provider value={this.handlePresentSnackbar}>
-                <SnackbarContextNext.Provider value={{
-                    handleEnqueueSnackbar: this.handleEnqueueSnackbar,
-                    handleCloseSnackbar: this.handleDismissSnack,
-                }}>
-                    <Fragment>
-                        {children}
-                        <div className={classNames(
+            <SnackbarContext.Provider value={contextValue}>
+                <Fragment>
+                    {children}
+                    <div
+                        className={classNames(
                             classes.root,
-                            classes[`anchorOrigin${capitalise(anchorOrigin.vertical)}${capitalise(anchorOrigin.horizontal)}`],
+                            classes[
+                                `anchorOrigin${capitalise(anchorOrigin.vertical)}${capitalise(
+                                    anchorOrigin.horizontal,
+                                )}`
+                            ],
                             className,
-                        )}>
-                            {snacks.map((snack, index) => (
-                                <SnackbarItem
-                                    {...props}
-                                    classOverrides={itemClasses}
-                                    key={snack.key}
-                                    anchorOrigin={anchorOrigin}
-                                    snack={snack}
-                                    offset={this.offsets[index]}
-                                    onClose={this.handleCloseSnack}
-                                    onExited={this.handleExitedSnack}
-                                    onSetHeight={this.handleSetHeight}
-                                />
-                            ))}
-                        </div>
-                    </Fragment>
-                </SnackbarContextNext.Provider>
+                        )}
+                    >
+                        {snacks.map((snack, index) => (
+                            <SnackbarItem
+                                {...props}
+                                classOverrides={itemClasses}
+                                key={snack.key}
+                                anchorOrigin={anchorOrigin}
+                                snack={snack}
+                                offset={this.offsets[index]}
+                                onClose={this.handleCloseSnack}
+                                onExited={this.handleExitedSnack}
+                                onSetHeight={this.handleSetHeight}
+                            />
+                        ))}
+                    </div>
+                </Fragment>
             </SnackbarContext.Provider>
         );
     }
 }
 
 SnackbarProvider.propTypes = {
+    /** @ignore */
+    className: PropTypes.any,
     /**
      * Most of the time, this is your App. every component from this point onward
      * will be able to show snackbars.
