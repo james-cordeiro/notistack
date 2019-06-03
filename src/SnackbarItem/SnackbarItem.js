@@ -6,7 +6,11 @@ import RootRef from '@material-ui/core/RootRef';
 import Snackbar from '@material-ui/core/Snackbar';
 import SnackbarContent from '@material-ui/core/SnackbarContent';
 import { styles, getTransitionStyles } from './SnackbarItem.styles';
-import { capitalise, getMuiClasses, getTransitionDirection } from './SnackbarItem.util';
+import {
+    getTransitionDirection,
+    getMuiClasses,
+} from './SnackbarItem.util';
+import capitalise from '../utils/capitalise';
 
 
 class SnackbarItem extends Component {
@@ -37,6 +41,7 @@ class SnackbarItem extends Component {
     render() {
         const {
             classes,
+            classOverrides = {},
             action,
             anchorOrigin,
             ContentProps = {},
@@ -104,6 +109,7 @@ class SnackbarItem extends Component {
                             className={classNames(
                                 classes.base,
                                 classes[`variant${capitalise(variant)}`],
+                                classOverrides[`variant${capitalise(variant)}`],
                                 (!hideIconVariant && icon) ? classes.lessPadding : null,
                                 className,
                             )}
