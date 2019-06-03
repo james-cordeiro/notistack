@@ -2,7 +2,7 @@ import green from '@material-ui/core/colors/green';
 import amber from '@material-ui/core/colors/amber';
 import { muiClasses } from './SnackbarItem.util';
 import { TRANSITION_DELAY, TRANSITION_DOWN_DURATION } from '../utils/constants';
-
+import capitalise from '../utils/capitalise';
 
 export const styles = theme => ({
     ...muiClasses,
@@ -41,11 +41,11 @@ export const styles = theme => ({
  * @returns {object}
  */
 export const getTransitionStyles = (offset, anchorOrigin) => {
-    const vertical = (anchorOrigin.vertical !== "center")? anchorOrigin.vertical : 'bottom';
+    const vertical = anchorOrigin.vertical !== 'center' ? anchorOrigin.vertical : 'bottom';
 
     return Object.assign(
         {
-            ['margin-'+vertical]: offset,
+            [`margin${capitalise(vertical)}`]: offset,
             ...(() => {
                 if (anchorOrigin.horizontal !== 'center') {
                     return {
