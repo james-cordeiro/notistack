@@ -355,7 +355,7 @@ SnackbarProvider.propTypes = {
     /**
      * The component used for the transition.
      */
-    TransitionComponent: PropTypes.elementType,
+    TransitionComponent: PropTypes.any,
     /**
      * The duration for the transition, in milliseconds.
      * You may specify a single timeout for all transitions, or individually with an object.

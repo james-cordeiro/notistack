@@ -6,12 +6,8 @@ import RootRef from '@material-ui/core/RootRef';
 import Snackbar from '@material-ui/core/Snackbar';
 import SnackbarContent from '@material-ui/core/SnackbarContent';
 import { styles, getTransitionStyles } from './SnackbarItem.styles';
-import {
-    getTransitionDirection,
-    getMuiClasses,
-} from './SnackbarItem.util';
+import { getTransitionDirection, getMuiClasses } from './SnackbarItem.util';
 import capitalise from '../utils/capitalise';
-
 
 class SnackbarItem extends Component {
     constructor(props) {
@@ -20,14 +16,20 @@ class SnackbarItem extends Component {
     }
 
     handleClose = key => (event, reason) => {
-        const { onClose, snack: { onClose: singleOnClose } } = this.props;
+        const {
+            onClose,
+            snack: { onClose: singleOnClose },
+        } = this.props;
         if (reason === 'clickaway') return;
         if (singleOnClose) singleOnClose(event, reason, key);
         onClose(event, reason, key);
     };
 
     handleExited = key => (event) => {
-        const { onExited, snack: { onExited: singleOnExited } } = this.props;
+        const {
+            onExited,
+            snack: { onExited: singleOnExited },
+        } = this.props;
         if (singleOnExited) singleOnExited(event, key);
         onExited(event, key);
     };
@@ -110,7 +112,7 @@ class SnackbarItem extends Component {
                                 classes.base,
                                 classes[`variant${capitalise(variant)}`],
                                 classOverrides[`variant${capitalise(variant)}`],
-                                (!hideIconVariant && icon) ? classes.lessPadding : null,
+                                !hideIconVariant && icon ? classes.lessPadding : null,
                                 className,
                             )}
                             {...contentProps}
@@ -134,17 +136,9 @@ SnackbarItem.propTypes = {
     classes: PropTypes.object.isRequired,
     offset: PropTypes.number.isRequired,
     snack: PropTypes.shape({
-        message: PropTypes.oneOfType([
-            PropTypes.string,
-            PropTypes.node,
-        ]).isRequired,
-        variant: PropTypes.oneOf(
-            ['default', 'error', 'success', 'warning', 'info'],
-        ),
-        key: PropTypes.oneOfType([
-            PropTypes.string,
-            PropTypes.number,
-        ]).isRequired,
+        message: PropTypes.oneOfType([PropTypes.string, PropTypes.node]).isRequired,
+        variant: PropTypes.oneOf(['default', 'error', 'success', 'warning', 'info']),
+        key: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
         open: PropTypes.bool.isRequired,
     }).isRequired,
     iconVariant: PropTypes.shape({

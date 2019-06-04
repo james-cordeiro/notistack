@@ -64,10 +64,6 @@ const muiClasses = {
     root: {
         position: 'relative',
     },
-    variantSuccess: {},
-    variantError: {},
-    variantInfo: {},
-    variantWarning: {},
     anchorOriginTopCenter: {},
     anchorOriginBottomCenter: {},
     anchorOriginTopRight: {},
